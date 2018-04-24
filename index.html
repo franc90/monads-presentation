@@ -1,0 +1,659 @@
+<!DOCTYPE HTML>
+<!--[if IE 6]>
+<html id="ie6" lang="en-US" class="ie ie6 lt-ie9">
+<![endif]-->
+<!--[if IE 7]>
+<html id="ie7" lang="en-US" class="ie ie7 lt-ie9">
+<![endif]-->
+<!--[if IE 8]>
+<html id="ie8" lang="en-US" class="ie ie8 lt-ie9">
+<![endif]-->
+<!--[if gte IE 9]>
+<html lang="en-US" class="ie ie9">
+<![endif]-->
+<!--[if !(IE)]><!-->
+<html lang="en-US" class="">
+<!--<![endif]-->
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0 minimal-ui">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="author" content="marcolago">
+
+	<meta property="og:title" content="Monads">
+	<meta property="og:site_name" content="FMonads">
+
+	<title>Monads</title>
+	<link rel="stylesheet" href="assets/css/reset.css">
+	<link rel="stylesheet" href="css/flowtime.css">
+	<link rel="stylesheet" href="css/themes/default.css">
+	<link rel="stylesheet" href="assets/css/prism.css">
+	<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+	<link rel="icon" href="favicon.ico" type="image/x-icon">
+
+	<link rel="apple-touch-icon-precomposed" 						href="img/touch-icon-iphone.png">
+	<link rel="apple-touch-icon-precomposed" 	sizes="72x72" 		href="img/touch-icon-ipad.png">
+	<link rel="apple-touch-icon-precomposed" 	sizes="114x114" 	href="img/touch-icon-iphone-retina.png">
+	<link rel="apple-touch-icon-precomposed" 	sizes="144x144" 	href="img/touch-icon-ipad-retina.png">
+
+	<link rel="apple-touch-startup-image" href="img/startup-640x920.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)">
+	<link rel="apple-touch-startup-image" href="img/startup-640x1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+
+</head>
+<body class="">
+
+	<div class="flowtime">
+		<div class="ft-section" data-id="section-1">
+			<div id="/section-1/page-1" class="ft-page" data-id="page-1" data-title="Monads">
+				<div class="stack-center">
+					<div class="stacked-center">
+						<h1>Monads</h1>
+						<span>based on</span>
+						<h3>FUNCTIONAL PROGRAMING AND EVENT SOURCING - A PAIR MADE IN HEAVEN by Paweł Szulc</h3>
+					</div>
+				</div>
+			</div>
+			<div id="/section-1/page-2" class="ft-page" data-id="page-2">
+				<div class="stack-center">
+					<h1 class="stacked-center">WTF Monads?</h1>
+				</div>
+			</div>
+			<div id="/section-1/page-3" class="ft-page" data-id="page-3">
+				<div class="stack-center">
+					<div class="stacked-center">
+						<h2>Burrito?</h2>
+						<img src="img/pdp_cantina_burrito_steak.png">
+					</div>
+				</div>
+			</div>
+			<div id="/section-1/page-4" class="ft-page" data-id="page-4">
+				<div class="stack-center">
+					<img class="stacked-center" src="img/monad_science_cat.jpg">
+				</div>
+			</div>
+			<div id="/section-1/page-5" class="ft-page" data-id="page-5">
+				<div class="stack-center">
+					<ul class="stacked-center">
+						<li>We understand code</li>
+						<li class="ft-fragment">It is easier to talk about related ideas and then abstract to something more general</li>
+						<li class="ft-fragment">Having abstract model created, we tend to create metaphors</li>
+						<li class="ft-fragment">Having all above we can formalize</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="ft-section" data-id="section-2">
+			<div id="/section-2/page-1" class="ft-page" data-id="page-1">
+				<div class="stack-center">
+					<h1 class="stacked-center">Let's talk code</h1>
+				</div>
+			</div>
+			<div id="/section-2/page-2" class="ft-page" data-id="page-2">
+				<h1>Finding car insurance's name</h1>
+				<p class="ft-fragment">Model</p>
+				<pre class="ft-fragment line-numbers"><code class="language-java">public class Person {
+    private Car car;
+
+    public Car getCar() {
+        return car;
+    }
+}</code></pre>
+				<pre class="ft-fragment line-numbers"><code class="language-java">public class Car {
+    private Insurance insurance;
+
+    public Insurance getInsurance() {
+        return insurance;
+    }
+}</code></pre>
+			</div>
+			<div id="/section-2/page-3" class="ft-page" data-id="page-3">
+				<h1>Finding car insurance's name</h1>
+				<p>Model p.2</p>
+				<pre class="line-numbers"><code class="language-java">public class Insurance {
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+}</code></pre>
+			</div>
+			<div id="/section-2/page-4" class="ft-page" data-id="page-4">
+				<h1>Finding car insurance's name</h1>
+				<p>Implementation</p>
+				<pre class="ft-fragment line-numbers"><code class="language-java">public interface InsuranceFinder {
+
+    String findInsuranceName(Person person);
+
+}</code></pre>
+
+<pre class="ft-fragment line-numbers"><code class="language-java">public class NaiveInsuranceFinder implements InsuranceFinder {
+
+    public String findInsuranceName(Person person) {
+        return person.getCar().getInsurance().getName();
+    }
+    
+}</code></pre>
+			</div>
+			<div id="/section-2/page-5" class="ft-page" data-id="page-5">
+				<div class="stack-center">
+					<h2 class="stacked-center">Problem?</h2>
+				</div>
+			</div>
+
+			<div id="/section-2/page-6" class="ft-page" data-id="page-6">
+				<pre class="line-numbers"><code class="language-java">Person notInsured = new Person(new Car(null));
+InsuranceFinder finder = new NaiveInsuranceFinder();
+finder.findInsuranceName(notInsured);
+</code></pre>
+			</div>
+			<div id="/section-2/page-7" class="ft-page" data-id="page-7">
+				<pre class="line-numbers" data-line="3"><code class="language-java">Person notInsured = new Person(new Car(null));
+InsuranceFinder finder = new NaiveInsuranceFinder();
+finder.findInsuranceName(notInsured);
+</code></pre>
+			<pre><code>java.lang.NullPointerException
+	at org.insurance.finder.impl.NaiveInsuranceFinder.findInsuranceName(NaiveInsuranceFinder.java:9)
+	at org.insurance.finder.impl.NaiveInsuranceFinderTest.testFindInsurance(NaiveInsuranceFinderTest.java:21)
+</code></pre>
+			</div>
+
+			<div id="/section-2/page-8" class="ft-page" data-id="page-8">
+				<div class="stack-center">
+					<h2 class="stacked-center">Solution?</h2>
+				</div>
+			</div>
+
+			<div id="/section-2/page-9" class="ft-page" data-id="page-9">
+				<pre class="line-numbers"><code class="language-java">public class DeepDoubtsInsuranceFinder implements InsuranceFinder {
+
+    public String findInsuranceName(Person person) {
+        if (person != null) {
+            Car car = person.getCar();
+            if (car != null) {
+                Insurance insurance = car.getInsurance();
+                if (insurance != null) {
+                	String insuranceName = insurance.getName();
+                    if (insuranceName != null) {
+                    	return insuranceName;
+                    }
+                }
+            }
+        }
+
+        return "Unknown";
+    }
+}</code></pre>
+			</div>
+
+			<div id="/section-2/page-10" class="ft-page" data-id="page-10">
+				<pre class="line-numbers"><code class="language-java">public class TooManyChoicesInsuranceFinder implements InsuranceFinder {
+    private static final String UNKNOWN = "Unknown";
+
+    public String findInsuranceName(Person person) {
+        if (person == null) 
+            return UNKNOWN;
+
+        Car car = person.getCar();
+        if (car == null)
+            return UNKNOWN;
+
+        Insurance insurance = car.getInsurance();
+        if (insurance == null) 
+            return UNKNOWN;
+
+		String insuranceName = insurance.getName();
+        if (insuranceName == null)
+        	return UNKNOWN;
+
+        return insuranceName;
+    }
+}</code></pre>
+			</div>
+		</div>
+
+		<div class="ft-section" data-id="section-3">
+			<div id="/section-3/page-1" class="ft-page" data-id="page-1">
+				<div class=stack-center>
+					<h1 class="stacked-center">Call me: Maybe</h1>
+				</div>
+			</div>
+			<div id="/section-3/page-2" class="ft-page" data-id="page-2">
+				<pre class="line-numbers"><code class="language-java">public class Optional&lt;T&gt; {
+    private static final Optional&lt;?&gt; EMPTY = new Optional&lt;&gt;(null);
+    private T value;
+
+    private Optional(T value) { this.value = value; }
+
+    public static &lt;T&gt; Optional&lt;T&gt; of(T value) {
+        return value == null ? EMPTY : new Optional&lt;&gt;(value);
+    }
+
+    public boolean isPresent() {
+        return value != null;
+    }
+
+    public T get() {
+        if (value == null)
+            throw new NoSuchElementException("No value");
+        return value;
+    }
+
+</code></pre>
+			</div>
+			<div id="/section-3/page-3" class="ft-page" data-id="page-3">
+				<pre class="line-numbers" data-start="21"><code class="language-java">	public T orElse(T elseValue) {
+        return isPresent() ? value : elseValue;
+    }
+
+	public &lt;U&gt; Optional&lt;U&gt; flatMap(Function&lt;T, Optional&lt;U&gt;&gt; function) {
+        Objects.requireNonNull(function);
+        if (isPresent())
+            return Objects.requireNonNull(function.apply(value));
+        return EMPTY;
+    }
+
+    public &lt;U&gt; Optional&lt;U&gt; map(Function&lt;T, U&gt; function) {
+        Objects.requireNonNull(function);
+        if (isPresent())
+            return of(function.apply(value));	
+        return EMPTY;
+    }
+
+}</code></pre>
+			</div>
+			<div id="/section-3/page-4" class="ft-page" data-id="page-4">
+				<h1>Rethinking the model</h1>
+				<pre class="ft-fragment line-numbers"><code class="language-java">public class Person {
+    private Optional&lt;Car&gt; car;
+
+    public Optional&lt;Car&gt; getCar() {
+        return car;
+    }
+}</code></pre>
+				<pre class="ft-fragment line-numbers"><code class="language-java">public class Car {
+    private Optional&lt;Insurance&gt; insurance;
+
+    public Optional&lt;Insurance&gt; getInsurance() {
+        return insurance;
+    }
+}</code></pre>
+			</div>
+			<div id="/section-3/page-5" class="ft-page" data-id="page-5">
+				<h1>Rethinking the model p.2</h1>
+				<pre class="ft-fragment line-numbers"><code class="language-java">public class Insurance {
+    private final String name;
+
+    public Insurance(final String name) {
+    	Objects.requireNonNull(name);
+    	this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+}</code></pre>
+
+<pre class="ft-fragment line-numbers"><code class="language-java">public interface InsuranceFinder {
+    String findInsuranceName(Optional&lt;Person&gt; person);
+}</code></pre>
+			</div>
+			<div id="/section-3/page-6" class="ft-page" data-id="page-6">
+				<div class="stack-center">
+					<h2 class="stacked-center">How use it?</h2>
+				</div>
+			</div>
+			<div id="/section-3/page-7" class="ft-page" data-id="page-7">
+				<h1>Implementation</h1>
+				<pre class="ft-fragment line-numbers"><code class="language-java">public class NotExactlyCorrectInsuranceFinder implements InsuranceFinder {
+    @Override
+    public String findInsuranceName(Optional&lt;Person&gt; person) {
+        if (person.isPresent()) {
+            Optional&lt;Car&gt; car = person.get().getCar();
+            if (car.isPresent()) {
+                Optional&lt;Insurance&gt; insurance = car.get().getInsurance();
+                if (insurance.isPresent()) {
+                    return insurance.get().getName();
+                }
+            }
+        }
+        return "Unknown";
+    }
+}</code></pre>
+			</div>
+			<div id="/section-3/page-8" class="ft-page" data-id="page-8">
+				<h1>Implementation</h1>
+				<pre class="ft-fragment line-numbers"><code class="language-java">public class MonadicInsuranceFinder implements InsuranceFinder {
+    public String findInsuranceName(Optional&lt;Person&gt; person) {
+        return person.flatMap(new Function&lt;Person, Optional&lt;Car&gt;&gt;() {
+                    public Optional&lt;Car&gt; apply(Person person1) {
+                        return person1.getCar();
+                    }
+                }).flatMap(new Function&lt;Car, Optional&lt;Insurance&gt;&gt;() {
+                    public Optional&lt;Insurance&gt; apply(Car car) {
+                        return car.getInsurance();
+                    }
+                }).map(new Function&lt;Insurance, String&gt;() {
+                    public String apply(Insurance insurance) {
+                        return insurance.getName();
+                    }
+                }).orElse("Unknown");
+    }
+}</code></pre>
+			</div>
+			<div id="/section-3/page-9" class="ft-page" data-id="page-9">
+				<h1>... or in Java 8</h1>
+				<div class="stack">
+				<div class="stacked">
+					<pre class="ft-fragment line-numbers"><code class="language-java">public class MonadicInsuranceFinder implements InsuranceFinder {
+
+    @Override
+    public String findInsuranceName(Optional&lt;Person&gt; person) {
+        return person
+                .flatMap(Person::getCar)
+                .flatMap(Car::getInsurance)
+                .map(Insurance::getName)
+                .orElse("Unknown");
+    }
+
+}</code></pre></div>
+					
+				</div>
+			</div>
+		</div>
+
+		<div class="ft-section" data-id="section-4">
+			<div id="/section-4/page-1" class="ft-page" data-id="page-1">
+				<h1>How does it works?</h1>
+					<pre class="line-numbers" style="display:block;"data-line="2-3"><code class="language-java">public class MonadicInsuranceFinder implements InsuranceFinder {
+	    public String findInsuranceName(Optional&lt;Person&gt; person) {
+	        return person
+	                .flatMap(Person::getCar)
+	                .flatMap(Car::getInsurance)
+	                .map(Insurance::getName)
+	                .orElse("Unknown");
+	    }
+	}</code></pre>
+				<div class="stack">
+					<div class="stack-center" style="top: 0rem;">
+						<div class="ft-fragment stacked stacked-center">
+							<img class="stacked-center" src="img/Optional.png">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="/section-4/page-2" class="ft-page" data-id="page-2">
+				<h1>How does it works?</h1>
+					<pre class="line-numbers" style="display:block;"data-line="4"><code class="language-java">public class MonadicInsuranceFinder implements InsuranceFinder {
+	    public String findInsuranceName(Optional&lt;Person&gt; person) {
+	        return person
+	                .flatMap(Person::getCar)
+	                .flatMap(Car::getInsurance)
+	                .map(Insurance::getName)
+	                .orElse("Unknown");
+	    }
+	}</code></pre>
+				<div class="stack">
+					<div class="stack-center" style="top: 0rem;">
+						<div class="stacked stacked-center">
+							<img class="stacked-center" src="img/map_person.png">
+						</div>
+						<div class="ft-fragment stacked stacked-center">
+							<img class="stacked-center" src="img/flat_person.png">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="/section-4/page-3" class="ft-page" data-id="page-3">
+				<h1>How does it works?</h1>
+					<pre class="line-numbers" style="display:block;"data-line="5"><code class="language-java">public class MonadicInsuranceFinder implements InsuranceFinder {
+	    public String findInsuranceName(Optional&lt;Person&gt; person) {
+	        return person
+	                .flatMap(Person::getCar)
+	                .flatMap(Car::getInsurance)
+	                .map(Insurance::getName)
+	                .orElse("Unknown");
+	    }
+	}</code></pre>
+				<div class="stack">
+					<div class="stack-center" style="top: 0rem;">
+						<div class="stacked stacked-center">
+							<img class="stacked-center" src="img/map_car.png">
+						</div>
+						<div class="ft-fragment stacked stacked-center">
+							<img class="stacked-center" src="img/flat_car.png">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="/section-4/page-4" class="ft-page" data-id="page-4">
+				<h1>How does it works?</h1>
+					<pre class="line-numbers" style="display:block;"data-line="6"><code class="language-java">public class MonadicInsuranceFinder implements InsuranceFinder {
+	    public String findInsuranceName(Optional&lt;Person&gt; person) {
+	        return person
+	                .flatMap(Person::getCar)
+	                .flatMap(Car::getInsurance)
+	                .map(Insurance::getName)
+	                .orElse("Unknown");
+	    }
+	}</code></pre>
+				<div class="stack">
+					<div class="stack-center" style="top: 0rem;">
+						<div class="stacked stacked-center">
+							<img class="stacked-center" src="img/map_insurance.png">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="/section-4/page-5" class="ft-page" data-id="page-5">
+				<h1>How does it works?</h1>
+					<pre class="line-numbers" style="display:block;"data-line="7"><code class="language-java">public class MonadicInsuranceFinder implements InsuranceFinder {
+	    public String findInsuranceName(Optional&lt;Person&gt; person) {
+	        return person
+	                .flatMap(Person::getCar)
+	                .flatMap(Car::getInsurance)
+	                .map(Insurance::getName)
+	                .orElse("Unknown");
+	    }
+	}</code></pre>
+				<div class="stack">
+					<div class="stack-center" style="top: 0rem;">
+						<div class="stacked stacked-center">
+							<img class="stacked-center" src="img/or_else.png">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="ft-section" data-id="section-5">
+			<div id="/section-5/page-1" class="ft-page" data-id="page-1">
+				<div class="stack-center">
+					<h1 class="stacked-center">What else?</h1>
+				</div>
+			</div>
+
+			<div id="/section-5/page-2" class="ft-page" data-id="page-2">
+				<h2>Model</h2>
+				<pre class="line-numbers">public class Dish {
+    private int calories;
+    private String name;
+
+    public int getCalories() {
+        return calories;
+    }
+
+    public String getName() {
+        return name;
+    }
+}<code class="language-java"></code></pre>
+			</div>
+
+			<div id="/section-5/page-3" class="ft-page" data-id="page-3">
+				<h2>Task</h2>
+				<pre class="line-numbers"><code class="language-java">public class Java7DishFinder {
+    public List&lt;String&gt; findOrderedLowCaloriesDishesNames(List&lt;Dish&gt; menu) {
+        List&lt;Dish&gt; lowCaloriesDishes = new ArrayList&lt;&gt;();
+        for (Dish dish : menu) {
+            if (dish.getCalories() &lt; 400)
+                lowCaloriesDishes.add(dish);
+        }
+        Collections.sort(lowCaloriesDishes, new Comparator&lt;Dish&gt;() {
+            public int compare(Dish d1, Dish d2) {
+                return Integer.compare(d1.getCalories(), d2.getCalories());
+            }
+        });
+        List&lt;String&gt; lowCaloriesDishesNames = new ArrayList&lt;&gt;();
+        for (Dish dish : lowCaloriesDishes) {
+            lowCaloriesDishesNames.add(dish.getName());
+        }
+        return lowCaloriesDishesNames;
+    }
+}
+</code></pre>
+			</div>
+
+			<div id="/section-5/page-4" class="ft-page" data-id="page-4">
+				<h2>Task - Stream Monad</h2>
+				<pre class="line-numbers"><code class="language-java">public class DishFinder {
+
+    public List&lt;String&gt; findOrderedLowCaloriesDishes(List&lt;Dish&gt; menu) {
+        return menu
+                .stream()
+                .filter(d -&gt; d.getCalories() &lt; 400)
+                .sorted(Comparator.comparing(Dish::getCalories))
+                .map(Dish::getName)
+                .collect(Collectors.toList());
+    }
+
+}</code></pre>
+			</div>
+		</div>
+
+		<div class="ft-section" data-id="section-6">
+			<div id="/section-6/page-1" class="ft-page" data-id="page-1">
+				<ul>
+					<li>We've seen two wrapping classes</li>
+					<li class="ft-fragment">All have mapping methods</li>
+					<li class="ft-fragment">Each can take a function that can be called on a value wrapped by the structure</li>
+					<li class="ft-fragment">Both are MONADS so...</li>
+				</ul>
+			</div>
+
+			<div id="/section-6/page-2" class="ft-page" data-id="page-2">
+				<div class="stack-center">
+					<h1 class="stacked-center">WTF Monads?</h1>
+				</div>
+			</div>
+
+			<div id="/section-6/page-3" class="ft-page" data-id="page-3">
+				<ul>
+					<li>It is a container, a box</li>
+					<li class="ft-fragment">A box that can store a value</li>
+					<li class="ft-fragment">A box that has a common interface that allows us to do one thing: connect sequence of operations on the content of the box</li>
+					<li class="ft-fragment">But the way it is done depends on a box</li>
+				</ul>
+			</div>
+			<div id="/section-6/page-3" class="ft-page" data-id="page-3">
+				<h2>Or by definition</h2>
+				<p  class="ft-fragment">Monad is an abstract data type that has two operations: unit and bind</p>
+				<pre class="ft-fragment line-numbers"><code class="language-java">M&lt;A&gt; unit(A, a);
+M&lt;B&gt; bind(M&lt;A&gt; ma, Function&lt;A, M&lt;B&gt;&gt; f);</code></pre>
+				<pre class="ft-fragment line-numbers"><code class="language-java">interface M {
+	default M&lt;B&gt; map(Function&lt;A, B&gt; f) {
+		return bind(x -> unit(f.apply(x)));
+	}
+
+	M&lt;B&gt; bind(Function&lt;A, M&lt;B&gt;&gt; f)
+}</code></pre>
+			</div>
+			<div id="/section-6/page-4" class="ft-page" data-id="page-4">
+				<h1>Profit?</h1>
+				<ul>
+					<li class="ft-fragment">Reduce code duplication</li>
+					<li class="ft-fragment">Improve maintainability</li>
+					<li class="ft-fragment">Increase readibility</li>
+					<li class="ft-fragment">Remove side effects</li>
+					<li class="ft-fragment">Hide complexity</li>
+					<li class="ft-fragment">Encapsulate implementation details</li>
+				</ul>
+			</div>
+			<div id="/section-6/page-5" class="ft-page" data-id="page-5">
+				<h1>Using monads...</h1>
+				<h2 class="ft-fragment">with Java &lt; 8</h2>
+				<ul>
+					<li class="ft-fragment">Use Guava's Optional</li>
+					<li class="ft-fragment">has transform - something between map and flatMap</li>
+					<li class="ft-fragment">For manipulating collections use <a href="http://www.slideshare.net/mariofusco/no-more-loops-with-lambdaj">lambdaj</a></li>
+				</ul>
+				<h2 class="ft-fragment">with Java &ge; 8</h2>
+				<ul>
+					<li class="ft-fragment">Java's Optional, Stream, ComputableFuture</li>
+					<li class="ft-fragment">com.jason-goodwin:better-monads - has Try monad (!) and stream od ComputableFuture</li>
+					<li class="ft-fragment">write your own?</li>
+				</ul>
+			</div>
+
+
+			<div id="/section-6/page-6" class="ft-page" data-id="page-6">
+				<div class="stack-center">
+					<h1 class="stacked-center">Thank you</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script src="js/brav1toolbox.js"></script>
+	<script src="js/flowtime.js"></script>
+	<script src="assets/js/prism.js"></script>
+
+	<script type="text/javascript">
+		var cacheTitle = document.title.replace("Flowtime.js | ", "");
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-1228618-10']);
+		_gaq.push(['_trackPageview']);
+		_gaq.push(['_trackEvent', 'Flowtime', 'Landing', document.title]);
+		(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+
+		// Configuration API test
+		 Flowtime.showProgress(true);
+		 Flowtime.fragmentsOnSide(true);
+		// Flowtime.fragmentsOnBack(true);
+		// Flowtime.useHistory(false);
+		 Flowtime.slideInPx(true);
+		 Flowtime.sectionsSlideToTop(true);
+		// Flowtime.gridNavigation(false);
+		// Flowtime.useOverviewVariant(true);
+		// Flowtime.parallaxInPx(true);
+		//
+		// event management
+		// Flowtime.addEventListener("flowtimenavigation", onNavigation, false);
+		Flowtime.onNavigation(onNavigation);
+		function onNavigation(e)
+		{
+			_gaq.push(['_trackEvent', 'Flowtime', 'Navigation', cacheTitle + ' > ' + document.title.replace("Flowtime.js | ", "")]);
+			// console.log(cacheTitle + ' > ' + document.title.replace("Flowtime.js | ", ""));
+			cacheTitle = document.title.replace("Flowtime.js | ", "");
+			//console.log('section', e.section, 'sectionIndex', e.sectionIndex);
+			//console.log('page', e.page, 'pageIndex', e.);
+			//console.log('pastSectionIndex', e.pastSectionIndex, 'pastPageIndex', e.pastPageIndex);
+			//console.log('prevSection', e.prevSection);
+			//console.log('nextSection', e.nextSection);
+			//console.log('prevPage', e.prevPage);
+			//console.log('nextPage', e.nextPage);
+			//console.log('fragment', e.fragment, + 'fragmentIndex', e.fragmentIndex);
+			//console.log("isOverview", e.isOverview);
+			//console.log('progress:', e.progress, 'total:', e.total);
+			// var value = Math.round(e.progress * 100 / e.total);
+			// console.log('Completion: ' + value + '%');
+		}
+		// starts the application with configuration options
+		Flowtime.start();
+	</script>
+	<script type="text/javascript" src="http://slidemote.jit.su/slidemote.js#flowtime"></script>
+</body>
+</html>
